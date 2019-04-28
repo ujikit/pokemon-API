@@ -11,7 +11,12 @@ class PokemonController {
 			// with forPage
 			// const pokemons = await Pokemon.query().with('categories').with('types').forPage(4,5).fetch()
 			// without paginate
-			const pokemons = await Pokemon.query().with('categories').with('types').fetch()
+			// const pokemons = await Pokemon.query().with('categories').with('types').fetch()
+			// pagination: http://192.168.1.129:3333/pokemon?page=2&items=9
+			let { item, page } = request.only(['item', 'page'])
+			const a = parseInt(page) || 1;
+			const b = parseInt(item) || 10;
+			const pokemons = await Pokemon.query().with('categories').with('types').paginate(a, b)
 			return response.status(200).json({
 				"status": "success",
 				"data": pokemons
