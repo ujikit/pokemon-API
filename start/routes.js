@@ -21,3 +21,7 @@ Route.group(() => {
 Route.group(() => {
   Route.post('/', 'PokemonImageController.index')
 }).prefix('upload')
+
+Route.group(() => {
+  Route.get('/', 'PokemonController.getName')
+}).prefix('search')

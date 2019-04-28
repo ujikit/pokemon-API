@@ -126,7 +126,35 @@ class PokemonController {
 		}
 	}
 
+	// SELECT BY NAME
+	async getName ({ request, response, params }) {
+	  const { name_pokemon } = request.only(['name_pokemon'])
+		try {
+			const pokemon = await Pokemon.query()
+              .with("types")
+              .with("categories")
+              .where("name_pokemon", "LIKE", "%" + name_pokemon + "%")
+              .orderBy("id", "asc")
+              .limit(10)
+              .fetch();
 
+			if (!pokemon) {
+				return response.status(400).json({
+					"status": "error",
+					"data": "Pokemon not available."
+				})
+			}
+			return response.status(200).json({
+				"status": "success",
+				"data": pokemon
+			})
+		} catch (e) {
+			return response.status(400).json({
+				"status": "error",
+				"data": "Something went wrong."
+			})
+		}
+	}
 
 }
 
