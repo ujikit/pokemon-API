@@ -6,7 +6,7 @@ class TypeController {
 
 	async index ({ request, response }) {
 		try {
-			const pokemons = await Type.query().with('pokemons').fetch()
+			const pokemons = await Type.query().fetch()
 			return response.status(200).json({
 				"status": "success",
 				"data": pokemons

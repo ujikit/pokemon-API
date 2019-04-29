@@ -4,10 +4,10 @@ const Route = use('Route')
 
 Route.group(() => {
   Route.get('/', 'PokemonController.index')
-  Route.post('/', 'PokemonController.store')
-  Route.get('/:id', 'PokemonController.show')
-  Route.patch('/:id', 'PokemonController.update')
-  Route.delete('/:id', 'PokemonController.destroy')
+  // Route.post('/', 'PokemonController.store')
+  // Route.get('/:id', 'PokemonController.show')
+  // Route.patch('/:id', 'PokemonController.update')
+  // Route.delete('/:id', 'PokemonController.destroy')
 }).prefix('pokemon')
 
 Route.group(() => {

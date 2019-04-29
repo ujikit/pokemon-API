@@ -4,10 +4,10 @@ const Model = use('Model')
 class Pokemon extends Model {
 
 	types () {
-		return this.belongsTo('App/Models/Type')
+		return this.belongsToMany('App/Models/Type').pivotTable('pokemon_type')
 	}
 
-	categories () {
+	category () {
 		return this.belongsTo('App/Models/Category')
 	}
 

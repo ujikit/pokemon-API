@@ -1,0 +1,46 @@
+INSERT INTO `pokemons` (name_pokemon, category_id, latitude_pokemon, longitude_pokemon, created_at, updated_at) VALUES ('Blastoise','1','52.936191','4.726726',NOW(),NOW()),
+('Caterpie','2','-37.7651298','145.3509665',NOW(),NOW()),
+('Metapod','3','-37.72741180637553','144.83374804258347',NOW(),NOW()),
+('Butterfree','4','38.191311424705','128.58497142791748',NOW(),NOW()),
+('Weedle','5','38.199228957618566','128.59359741210938',NOW(),NOW()),
+('Kakuna','6','51.503488','-0.018359',NOW(),NOW()),
+('Beedrill','6','34.0092419','-118.49760370000001',NOW(),NOW()),
+('Pidgey','7','51.529316','0.051945',NOW(),NOW()),
+('Pidgeotto','8','30.264215','-97.754544',NOW(),NOW()),
+('Pidgeot','8','52.406730','-1.765572',NOW(),NOW()),
+('Rattata','9','45.47210','9.17722',NOW(),NOW()),
+('Raticate','9','37.80198532630738','-122.41267204284668',NOW(),NOW()),
+('Spearow','7','37.80198532630738','-122.412672042846683',NOW(),NOW()),
+('Fearow','10','34.103059','-118.258854',NOW(),NOW()),
+('Ekans','11','51.540822','0.045801',NOW(),NOW());
+
+INSERT INTO `categories` (name_category) VALUES ('Shellfish'),('Worm'),('Cocoon'),('Butterfly'),('Hairy Bug'),('Poison Bee'),('Tiny Bird'),('Bird'),('Mouse'),('Beak'),('Snake');
+
+INSERT INTO `types` (name_type) VALUES ('Physic'),('Water'),('Grass'),('Bug'),('Fire'),('Electric'),('Poison'),('Ground'),('Fairy'),('Fighting'),('Ice'),('Flying'),('Normal'),('Rock');
+
+insert into pokemon_type (type_id, pokemon_id) values
+(2,1),
+(4,2),
+(4,3),
+(4,4),
+(12,4),
+(4,5),
+(7,5),
+(4,6),
+(7,6),
+(4,6),
+(7,6),
+(13,7),
+(12,7),
+(13,8),
+(12,8),
+(13,8),
+(12,8),
+(13,9),
+(13,9),
+(13,7),
+(12,7),
+(13,10),
+(12,10),
+(7,11);
+REGEXnya SQL: \,'[0-9]+\w+','(\d+|-\d+)\.\d+','(\d+|-\d+)\.\d+',NULL,NULL\)

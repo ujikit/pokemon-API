@@ -6,7 +6,7 @@ class CategoryController {
 
 	async index ({ request, response }) {
 		try {
-			const pokemons = await Category.query('pokemons').fetch()
+			const pokemons = await Category.query().fetch();
 			return response.status(200).json({
 				"status": "success",
 				"data": pokemons

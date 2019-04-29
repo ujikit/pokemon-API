@@ -8,9 +8,8 @@ class PokemonsSchema extends Schema {
     this.create('pokemons', (table) => {
       table.increments()
       table.string('name_pokemon', 80).nullable()
-      table.integer('type_id').unsigned().references('id').inTable('types').onDelete('cascade').onUpdate('cascade')
-      table.integer('category_id').unsigned().references('id').inTable('categories').onDelete('cascade').onUpdate('cascade')
-      table.string('image_url_pokemon', 80).nullable()
+      table.integer('category_id').unsigned().index('category_id')
+      table.foreign('category_id').references('categories.id').onDelete('cascade').onUpdate('cascade')
       table.string('latitude_pokemon', 80).nullable()
       table.string('longitude_pokemon', 80).nullable()
       table.timestamps()

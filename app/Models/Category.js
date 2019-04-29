@@ -4,7 +4,7 @@ const Model = use('Model')
 class Category extends Model {
 
 	pokemons () {
-		return this.hasOne('App/Models/Pokemon')
+		return this.hasMany('App/Models/Pokemon')
 	}
 
 }
