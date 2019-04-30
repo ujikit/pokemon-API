@@ -1,4 +1,5 @@
 'use strict'
+const Helper = use('Helpers')
 const Database = use('Database')
 const Pokemon = use('App/Models/Pokemon')
 const Category = use('App/Models/Category')
@@ -9,37 +10,53 @@ class PokemonController {
 		let { item, page } = request.only(['item', 'page'])
 		const a = parseInt(page) || 1;
 		const b = parseInt(item) || 10;
-		const pokemons = await Pokemon.query().with('category').with('types').paginate(a, b)
+		const pokemons = await Pokemon.query().with('category').with('types').orderBy("id", "desc").paginate(a, b)
 
 	 // const students = await Pokemon.query().with('category').with('types').fetch();
 	 return response.status(200).json({
- 	 		message: 'Succesfully get student',
+ 	 		status: 'success',
       data: pokemons
 	 })
 	}
 
-	// async store ({ request, response }) {
-	// 	const { name, image_url, type_id, category_id, latitude, longitude } = request.all()
-	// 	try {
-	// 		const pokemon = new Pokemon()
-	// 		pokemon.name = name
-	// 		pokemon.image_url = image_url
-	// 		pokemon.type_id = type_id
-	// 		pokemon.category_id = category_id
-	// 		pokemon.latitude = latitude
-	// 		pokemon.longitude = longitude
-	// 		await pokemon.save()
-	// 		return response.status(200).json({
-	// 			"status": "success",
-	// 			"data": "Your pokemon successfully recorded."
-	// 		})
-	// 	} catch (e) {
-	// 		return response.status(400).json({
-	// 			"status": "error",
-	// 			"data": "Something went wrong."+e
-	// 		})
-	// 	}
-	// }
+	async store ({ request, response }) {
+		const { name_pokemon, category_id, type_id, latitude_pokemon, longitude_pokemon } = request.all()
+		// const { clientName, extname, fileName, fieldName, tmpPath, headers, size, type, subtype, status, error } = request.file('picture_pokemon', { types: ['image'], size: '2mb' })
+		try {
+			// // Step [1]: Upload Image
+			// const picture_pokemon = request.file('picture_pokemon', { types: ['image'], size: '2mb' })
+			// await picture_pokemon.move(Helper.publicPath('uploads/pokemon'), { name: `${name_pokemon}.${extname}`, overwrite: true })
+			// if (!picture_pokemon.moved()) {
+			// 	console.log(picture_pokemon.error());
+			// 	return picture_pokemon.error()
+			// }
+			// Step [2]: Insert New Pokemon
+			await Database.table('pokemons').insert({
+				name_pokemon: name_pokemon,
+				category_id: category_id,
+				latitude_pokemon: latitude_pokemon,
+				longitude_pokemon: longitude_pokemon
+			})
+			// Step [3]: Checking Inserted Pokemon Name
+			let pokemon_data = await Database.table('pokemons').where({ name_pokemon: `${name_pokemon}` })
+			// // Step [4]: Insert New Pokemon Type with Looping
+			// for (var i = 0; i < type_id.length; i++) {
+			// 	await Database.table('pokemon_type').insert({
+			// 		pokemon_id: pokemon_data[0].id,
+			// 		type_id: type_id[i]
+			// 	})
+			// }
+			return response.status(200).json({
+				"status": "success",
+				"data": "Your pokemon successfully recorded."
+			})
+		} catch (e) {
+			return response.status(400).json({
+				"status": "error",
+				"data": "Something went wrong. \nError Message: "+e
+			})
+		}
+	}
 	//
 	// async show ({ request, response, params }) {
 	// 	try {
