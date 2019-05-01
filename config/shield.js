@@ -49,7 +49,8 @@ module.exports = {
     | headers, unless you want them to be set.
     |
     */
-    setAllHeaders: false,
+    setAllHeaders: true,
+    // setAllHeaders: false,
 
     /*
     |--------------------------------------------------------------------------

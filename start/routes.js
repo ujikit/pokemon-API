@@ -6,7 +6,7 @@ Route.post('/login', 'AuthController.login')
 Route.post('/register', 'AuthController.register')
 
 Route.group(() => {
-  Route.get('/', 'PokemonController.index').middleware(['auth'])
+  Route.get('/', 'PokemonController.index')
   Route.post('/', 'PokemonController.store')
   // Route.delete('/:id', 'PokemonController.destroy')
 }).prefix('pokemon')
