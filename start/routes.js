@@ -7,12 +7,14 @@ Route.post('/register', 'AuthController.register')
 
 Route.group(() => {
   Route.get('/', 'PokemonController.index')
+  Route.get('/:id', 'PokemonController.show')
   Route.post('/', 'PokemonController.store')
-  // Route.delete('/:id', 'PokemonController.destroy')
+  // Route.patch('/:id', 'PokemonController.update')
+  Route.delete('/:id', 'PokemonController.destroy')
 }).prefix('pokemon')
 
 Route.group(() => {
-  Route.get('/', 'PokemonController.getName').middleware(['auth'])
+  Route.get('/', 'PokemonController.getName')
 }).prefix('search')
 
 Route.group(() => {
@@ -22,7 +24,3 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/', 'TypeController.index')
 }).prefix('type')
-
-Route.group(() => {
-  Route.post('/', 'PokemonImageController.index')
-}).prefix('upload')

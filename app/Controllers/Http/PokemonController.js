@@ -11,17 +11,16 @@ class PokemonController {
 		const a = parseInt(page) || 1;
 		const b = parseInt(item) || 10;
 		const pokemons = await Pokemon.query().with('category').with('types').orderBy("id", "desc").paginate(a, b)
-
-	 // const students = await Pokemon.query().with('category').with('types').fetch();
-	 return response.status(200).json({
+	  return response.status(200).json({
  	 		status: 'success',
       data: pokemons
-	 })
+	  })
 	}
 
 	async store ({ request, response }) {
 		const { name_pokemon, category_id, type_id, latitude_pokemon, longitude_pokemon } = request.all()
 		const { clientName, extname, fileName, fieldName, tmpPath, headers, size, type, subtype, status, error } = request.file('picture_pokemon', { types: ['image'], size: '20mb' })
+
 		try {
 			// Step [1]: Upload Image
 			const picture_pokemon = request.file('picture_pokemon', { types: ['image'], size: '20mb' })
@@ -59,31 +58,31 @@ class PokemonController {
 			})
 		}
 	}
-	//
-	// async show ({ request, response, params }) {
-	// 	try {
-	// 		const pokemon = await Pokemon.find(params.id)
-	// 		if (!pokemon) {
-	// 			return response.status(400).json({
-	// 				"status": "error",
-	// 				"data": "Pokemon not available."
-	// 			})
-	// 		}
-	// 		return response.status(200).json({
-	// 			"status": "success",
-	// 			"data": pokemon
-	// 		})
-	// 	} catch (e) {
-	// 		return response.status(400).json({
-	// 			"status": "error",
-	// 			"data": "Something went wrong."
-	// 		})
-	// 	}
-	// }
-	// //
+
+	async show ({ request, response, params }) {
+		try {
+			const pokemon = await Pokemon.find(params.id)
+			if (!pokemon) {
+				return response.status(400).json({
+					"status": "error",
+					"data": "Pokemon not available."
+				})
+			}
+			return response.status(200).json({
+				"status": "success",
+				"data": pokemon
+			})
+		} catch (e) {
+			return response.status(400).json({
+				"status": "error",
+				"data": "Something went wrong."
+			})
+		}
+	}
+
 	// async update ({ request, response, params }) {
 	// 	try {
-	// 		const { name, image_url, type_id, category_id, latitude, longitude } = request.all()
+	// 		const { name_pokemon, category_id, latitude_pokemon, longitude_pokemon } = request.all()
 	// 		const pokemon = await Pokemon.find(params.id)
 	// 		if (!pokemon) {
 	// 			return response.status(400).json({
@@ -91,12 +90,10 @@ class PokemonController {
 	// 				"data": "Pokemon not available."
 	// 			})
 	// 		}
-	// 		pokemon.name = name
-	// 		pokemon.image_url = image_url
-	// 		pokemon.type_id = type_id
+	// 		pokemon.name_pokemon = name_pokemon
 	// 		pokemon.category_id = category_id
-	// 		pokemon.latitude = latitude
-	// 		pokemon.longitude = longitude
+	// 		pokemon.latitude_pokemon = latitude_pokemon
+	// 		pokemon.longitude_pokemon = longitude_pokemon
 	// 		await pokemon.save()
 	// 		return response.status(200).json({
 	// 			"status": "success",
@@ -105,34 +102,34 @@ class PokemonController {
 	// 	} catch (e) {
 	// 		return response.status(400).json({
 	// 			"status": "error",
-	// 			"data": "Something went wrong."
+	// 			"data": "Something went wrong."+e
 	// 		})
 	// 	}
 	// }
-	// //
-	// async destroy ({ request, response, params }) {
-	// 	try {
-	// 		const pokemon = await Pokemon.find(params.id)
-	// 		if (!pokemon) {
-	// 			return response.status(400).json({
-	// 				"status": "error",
-	// 				"data": "Pokemon not available."
-	// 			})
-	// 		}
-	// 		else {
-	// 			await pokemon.delete()
-	// 			return response.status(200).json({
-	// 				"status": "success",
-	// 				"data": "Data successfully deleted."
-	// 			})
-	// 		}
-	// 	} catch (e) {
-	// 		return response.status(400).json({
-	// 			"status": "error",
-	// 			"data": "Something went wrong."
-	// 		})
-	// 	}
-	// }
+
+	async destroy ({ request, response, params }) {
+		try {
+			const pokemon = await Pokemon.find(params.id)
+			if (!pokemon) {
+				return response.status(400).json({
+					"status": "error",
+					"data": "Pokemon not available."
+				})
+			}
+			else {
+				await pokemon.delete()
+				return response.status(200).json({
+					"status": "success",
+					"data": "Data successfully deleted."
+				})
+			}
+		} catch (e) {
+			return response.status(400).json({
+				"status": "error",
+				"data": "Something went wrong."
+			})
+		}
+	}
 
 	// SELECT BY NAME
 	async getName ({ request, response, params }) {
