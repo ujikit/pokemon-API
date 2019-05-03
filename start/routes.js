@@ -9,7 +9,7 @@ Route.group(() => {
   Route.get('/', 'PokemonController.index')
   Route.get('/:id', 'PokemonController.show')
   Route.post('/', 'PokemonController.store')
-  // Route.patch('/:id', 'PokemonController.update')
+  Route.patch('/:id', 'PokemonController.update')
   Route.delete('/:id', 'PokemonController.destroy')
 }).prefix('pokemon')
 

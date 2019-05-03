@@ -1,5 +1,6 @@
 'use strict'
 const Helper = use('Helpers')
+const Drive = use('Drive')
 const Database = use('Database')
 const Pokemon = use('App/Models/Pokemon')
 const Category = use('App/Models/Category')
@@ -80,32 +81,45 @@ class PokemonController {
 		}
 	}
 
-	// async update ({ request, response, params }) {
-	// 	try {
-	// 		const { name_pokemon, category_id, latitude_pokemon, longitude_pokemon } = request.all()
-	// 		const pokemon = await Pokemon.find(params.id)
-	// 		if (!pokemon) {
-	// 			return response.status(400).json({
-	// 				"status": "error",
-	// 				"data": "Pokemon not available."
-	// 			})
-	// 		}
-	// 		pokemon.name_pokemon = name_pokemon
-	// 		pokemon.category_id = category_id
-	// 		pokemon.latitude_pokemon = latitude_pokemon
-	// 		pokemon.longitude_pokemon = longitude_pokemon
-	// 		await pokemon.save()
-	// 		return response.status(200).json({
-	// 			"status": "success",
-	// 			"data": "Data successfully updated."
-	// 		})
-	// 	} catch (e) {
-	// 		return response.status(400).json({
-	// 			"status": "error",
-	// 			"data": "Something went wrong."+e
-	// 		})
-	// 	}
-	// }
+	async update ({ request, response, params }) {
+		try {
+			// console.log(`request all: ${JSON.stringify(request.all())}\n request file: ${JSON.stringify(request.file('picture_pokemon'))}`);
+			const { id_pokemon, old_name_pokemon, name_pokemon, category_id, types_id, latitude_pokemon, longitude_pokemon } = request.all()
+			const { clientName, extname, fileName, fieldName, tmpPath, headers, size, type, subtype, status, error } = request.file('picture_pokemon', { types: ['image'], size: '20mb' })
+			const pokemon = await Pokemon.find(id_pokemon)
+			if (!pokemon) {
+				return response.status(400).json({
+					"status": "error",
+					"data": "Pokemon not available."
+				})
+			}
+			if (old_name_pokemon !== name_pokemon) {
+				await Drive.delete(Helper.publicPath(`uploads/pokemon/${old_name_pokemon}.${extname}`))
+			}
+
+			const picture_pokemon = request.file('picture_pokemon', { types: ['image'], size: '20mb' })
+			await picture_pokemon.move(Helper.publicPath('uploads/pokemon'), { name: `${name_pokemon}.${extname}`, overwrite: true })
+			if (!picture_pokemon.moved()) {
+				console.log(picture_pokemon.error())
+				return "gagal"
+				return picture_pokemon.error()
+			}
+
+			pokemon.name_pokemon = name_pokemon
+			pokemon.latitude_pokemon = latitude_pokemon
+			pokemon.longitude_pokemon = longitude_pokemon
+			await pokemon.save()
+			return response.status(200).json({
+				"status": "success",
+				"data": "Data successfully updated."
+			})
+		} catch (e) {
+			return response.status(400).json({
+				"status": "error",
+				"data": "Something went wrong."+e
+			})
+		}
+	}
 
 	async destroy ({ request, response, params }) {
 		try {
