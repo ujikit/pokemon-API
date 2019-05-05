@@ -53,9 +53,10 @@ class PokemonController {
 				"data": "Your pokemon successfully recorded."
 			})
 		} catch (e) {
+			console.log(`Error Message: ${e}`)
 			return response.status(400).json({
 				"status": "error",
-				"data": "Something went wrong. \nError Message: "+e
+				"data": "Something went wrong."
 			})
 		}
 	}
@@ -114,9 +115,10 @@ class PokemonController {
 				"data": "Data successfully updated."
 			})
 		} catch (e) {
+			console.log(`Error Message: ${e}`)
 			return response.status(400).json({
 				"status": "error",
-				"data": "Something went wrong."+e
+				"data": "Something went wrong."
 			})
 		}
 	}
@@ -169,9 +171,10 @@ class PokemonController {
 				"data": pokemon
 			})
 		} catch (e) {
+			console.log(`Error Message: ${e}`)
 			return response.status(400).json({
 				"status": "error",
-				"data": "Something went wrong."+e
+				"data": "Something went wrong."
 			})
 		}
 	}
@@ -197,7 +200,7 @@ class PokemonController {
 	// 	} catch (e) {
 	// 		return response.status(400).json({
 	// 			"status": "error",
-	// 			"data": "Something went wrong."+e
+	// 			"data": "Something went wrong."
 	// 		})
 	// 	}
 	// }
