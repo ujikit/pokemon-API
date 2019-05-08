@@ -44,3 +44,13 @@ insert into pokemon_type (type_id, pokemon_id) values
 (12,10),
 (7,11);
 REGEXnya SQL: \,'[0-9]+\w+','(\d+|-\d+)\.\d+','(\d+|-\d+)\.\d+',NULL,NULL\)
+
+// return console.log("duplicate : "+uppercase_pokemon_name.charAt(0).toUpperCase() + uppercase_pokemon_name.slice(1));
+
+// return console.log(
+// 	`
+// 	 check_pokemon: ${name_pokemon.charAt(0).toUpperCase() + name_pokemon.slice(1)} == ${pokemon_data[0].name_pokemon}\n
+// 	 name_pokemon: ${name_pokemon}\n
+// 	 pokemon_data: ${JSON.stringify(pokemon_data)}
+// 	`
+// );

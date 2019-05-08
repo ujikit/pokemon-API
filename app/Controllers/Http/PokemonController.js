@@ -23,35 +23,45 @@ class PokemonController {
 		const { clientName, extname, fileName, fieldName, tmpPath, headers, size, type, subtype, status, error } = request.file('picture_pokemon', { types: ['image'], size: '20mb' })
 
 		try {
-			// Step [1]: Upload Image
-			const picture_pokemon = request.file('picture_pokemon', { types: ['image'], size: '20mb' })
-			await picture_pokemon.move(Helper.publicPath('uploads/pokemon'), { name: `${name_pokemon}.${extname}`, overwrite: true })
-			if (!picture_pokemon.moved()) {
-				console.log(picture_pokemon.error())
-				return "gagal"
-				return picture_pokemon.error()
-			}
-			// Step [2]: Insert New Pokemon
-			await Database.table('pokemons').insert({
-				name_pokemon: name_pokemon,
-				category_id: JSON.parse(category_id)[0],
-				latitude_pokemon: latitude_pokemon,
-				longitude_pokemon: longitude_pokemon
-			})
-			// Step [3]: Checking Inserted Pokemon Name & Pick data for pokemon id to pokemon_type Table
-			let pokemon_data = await Database.table('pokemons').where({ name_pokemon: `${name_pokemon}` })
-			// Step [4]: Insert New Pokemon Type with Looping
-			const type_id_array = JSON.parse(type_id)
-			for (var i = 0; i < type_id_array.length; i++) {
-				await Database.table('pokemon_type').insert({
-					pokemon_id: pokemon_data[0].id,
-					type_id: type_id_array[i]
+			// Step [1]: Checking Inserted Pokemon Name & Pick data for pokemon id to pokemon_type Table
+			let pokemon_data0 = await Database.table('pokemons').where({ name_pokemon: `${name_pokemon}` })
+			let uppercase_pokemon_name = name_pokemon.charAt(0).toUpperCase() + name_pokemon.slice(1)
+			if (pokemon_data0.length === 0) {
+				// Step [2]: Upload Image
+				const picture_pokemon = request.file('picture_pokemon', { types: ['image'], size: '20mb' })
+				await picture_pokemon.move(Helper.publicPath('uploads/pokemon'), { name: `${uppercase_pokemon_name}.${extname}`, overwrite: true })
+				if (!picture_pokemon.moved()) {
+					console.log(picture_pokemon.error())
+					return "gagal"
+					return picture_pokemon.error()
+				}
+				// Step [3]: Insert New Pokemon
+				await Database.table('pokemons').insert({
+					name_pokemon: uppercase_pokemon_name,
+					category_id: JSON.parse(category_id)[0],
+					latitude_pokemon: latitude_pokemon,
+					longitude_pokemon: longitude_pokemon
+				})
+				// Step [4]: Insert New Pokemon Type with Looping
+				let pokemon_data1 = await Database.table('pokemons').where({ name_pokemon: `${name_pokemon}` })
+				const type_id_array = JSON.parse(type_id)
+				for (var i = 0; i < type_id_array.length; i++) {
+					await Database.table('pokemon_type').insert({
+						pokemon_id: pokemon_data1[0].id,
+						type_id: type_id_array[i]
+					})
+				}
+				return response.status(200).json({
+					"status": "success",
+					"data": "Your pokemon successfully recorded."
 				})
 			}
-			return response.status(200).json({
-				"status": "success",
-				"data": "Your pokemon successfully recorded."
-			})
+			if (uppercase_pokemon_name.charAt(0).toUpperCase() + uppercase_pokemon_name.slice(1) == pokemon_data0[0].name_pokemon) {
+				return response.status(200).json({
+					"status": "duplicate",
+					"data": "Duplicate name of Pokemon."
+				})
+			}
 		} catch (e) {
 			console.log(`Error Message: ${e}`)
 			return response.status(400).json({
@@ -126,6 +136,7 @@ class PokemonController {
 	async destroy ({ request, response, params }) {
 		try {
 			const pokemon = await Pokemon.find(params.id)
+			const { name_pokemon } = pokemon
 			if (!pokemon) {
 				return response.status(400).json({
 					"status": "error",
@@ -134,6 +145,7 @@ class PokemonController {
 			}
 			else {
 				await pokemon.delete()
+				await Drive.delete(Helper.publicPath(`uploads/pokemon/${name_pokemon}.png`))
 				return response.status(200).json({
 					"status": "success",
 					"data": "Data successfully deleted."
