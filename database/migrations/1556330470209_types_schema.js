@@ -8,7 +8,8 @@ class TypesSchema extends Schema {
     this.create('types', (table) => {
       table.increments()
       table.string('name_type', 80).nullable()
-      table.timestamps()
+      table.timestamp('created_at').defaultTo(this.fn.now())
+      table.timestamp('updated_at').defaultTo(this.fn.now())
     })
   }
 

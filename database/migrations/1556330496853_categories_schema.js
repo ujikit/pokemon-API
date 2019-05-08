@@ -8,7 +8,8 @@ class CategoriesSchema extends Schema {
     this.create('categories', (table) => {
       table.increments()
       table.string('name_category', 80).nullable()
-      table.timestamps()
+      table.timestamp('created_at').defaultTo(this.fn.now())
+      table.timestamp('updated_at').defaultTo(this.fn.now())
     })
   }
 

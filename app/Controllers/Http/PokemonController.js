@@ -19,7 +19,7 @@ class PokemonController {
 	}
 
 	async store ({ request, response }) {
-		const { name_pokemon, category_id, type_id, latitude_pokemon, longitude_pokemon } = request.all()
+		const { name_pokemon, category_id, img_format_pokemon, type_id, latitude_pokemon, longitude_pokemon } = request.all()
 		const { clientName, extname, fileName, fieldName, tmpPath, headers, size, type, subtype, status, error } = request.file('picture_pokemon', { types: ['image'], size: '20mb' })
 
 		try {
@@ -39,6 +39,7 @@ class PokemonController {
 				await Database.table('pokemons').insert({
 					name_pokemon: uppercase_pokemon_name,
 					category_id: JSON.parse(category_id)[0],
+					img_format_pokemon: img_format_pokemon,
 					latitude_pokemon: latitude_pokemon,
 					longitude_pokemon: longitude_pokemon
 				})
@@ -112,7 +113,6 @@ class PokemonController {
 			await picture_pokemon.move(Helper.publicPath('uploads/pokemon'), { name: `${name_pokemon}.${extname}`, overwrite: true })
 			if (!picture_pokemon.moved()) {
 				console.log(picture_pokemon.error())
-				return "gagal"
 				return picture_pokemon.error()
 			}
 
@@ -136,7 +136,7 @@ class PokemonController {
 	async destroy ({ request, response, params }) {
 		try {
 			const pokemon = await Pokemon.find(params.id)
-			const { name_pokemon } = pokemon
+			const { name_pokemon, img_format_pokemon } = pokemon
 			if (!pokemon) {
 				return response.status(400).json({
 					"status": "error",
@@ -145,7 +145,7 @@ class PokemonController {
 			}
 			else {
 				await pokemon.delete()
-				await Drive.delete(Helper.publicPath(`uploads/pokemon/${name_pokemon}.png`))
+				await Drive.delete(Helper.publicPath(`uploads/pokemon/${name_pokemon}${img_format_pokemon}`))
 				return response.status(200).json({
 					"status": "success",
 					"data": "Data successfully deleted."

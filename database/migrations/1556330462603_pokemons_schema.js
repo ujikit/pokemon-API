@@ -10,9 +10,11 @@ class PokemonsSchema extends Schema {
       table.string('name_pokemon', 80).nullable()
       table.integer('category_id').unsigned().index('category_id')
       table.foreign('category_id').references('categories.id').onDelete('cascade').onUpdate('cascade')
+      table.string('img_format_pokemon', 6).nullable()
       table.string('latitude_pokemon', 80).nullable()
       table.string('longitude_pokemon', 80).nullable()
-      table.timestamps()
+      table.timestamp('created_at').defaultTo(this.fn.now())
+      table.timestamp('updated_at').defaultTo(this.fn.now())
     })
   }
 

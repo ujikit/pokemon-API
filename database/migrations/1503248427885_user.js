@@ -10,7 +10,8 @@ class UserSchema extends Schema {
       table.string('username', 80).notNullable().unique()
       table.string('email', 254).notNullable().unique()
       table.string('password', 60).notNullable()
-      table.timestamps()
+      table.timestamp('created_at').defaultTo(this.fn.now())
+      table.timestamp('updated_at').defaultTo(this.fn.now())
     })
   }
 
