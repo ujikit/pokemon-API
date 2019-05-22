@@ -24,3 +24,4 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/', 'TypeController.index')
 }).prefix('type')
+// .middleware(['auth'])

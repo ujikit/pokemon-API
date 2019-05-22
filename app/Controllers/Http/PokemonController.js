@@ -11,7 +11,7 @@ class PokemonController {
 		let { item, page } = request.only(['item', 'page'])
 		const a = parseInt(page) || 1;
 		const b = parseInt(item) || 10;
-		const pokemons = await Pokemon.query().with('category').with('types').orderBy("id", "desc").paginate(a, b)
+		const pokemons = await Pokemon.query().with('category').with('types').orderBy("id", "asc").paginate(a, b)
 	  return response.status(200).json({
  	 		status: 'success',
       data: pokemons
