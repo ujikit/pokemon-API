@@ -14,7 +14,8 @@ class AuthController {
 			if (jwt_token) {
 				return response.status(200).json({
 					"status": "success",
-					"data": jwt_token,
+					"data": dataAll,
+					"token": jwt_token,
 					"user_id": dataAll[0].id
 				})
 			}
