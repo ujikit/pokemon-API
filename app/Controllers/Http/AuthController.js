@@ -19,9 +19,10 @@ class AuthController {
 				})
 			}
 		} catch (e) {
+			console.log(e);
 			return response.status(403).json({
 				"status": "error",
-				"data": "Invalid credential."+e
+				"data": "Invalid username or password."
 			})
 		}
 	}
